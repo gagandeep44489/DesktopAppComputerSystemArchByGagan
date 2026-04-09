@@ -7,6 +7,9 @@ from app.models import Claim, Notification, Policy, User
 
 app = create_app()
 
+with app.app_context():
+    db.create_all()
+
 
 @app.shell_context_processor
 def shell_context():

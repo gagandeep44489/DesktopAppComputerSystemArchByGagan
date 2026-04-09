@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent
-DEFAULT_SQLITE_FILE = (BASE_DIR / "instance" / "insurance_claims.db").resolve()
+DEFAULT_SQLITE_FILE = (BASE_DIR / "database.db").resolve()
 
 
 class Config:
