@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>All Policies</h2>
+<table class="table table-striped"><thead><tr><th>No</th><th>Type</th><th>Customer</th></tr></thead><tbody>
+{% for p in policies %}<tr><td>{{ p.policy_number }}</td><td>{{ p.policy_type }}</td><td>{{ p.customer.full_name }}</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

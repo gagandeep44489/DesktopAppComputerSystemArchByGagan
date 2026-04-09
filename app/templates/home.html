@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Home - ICMS{% endblock %}
+{% block content %}
+<div class="p-5 bg-light rounded-3">
+  <h1>Insurance Claim Management System</h1>
+  <p class="lead">Manage policies, submit claims, and track approval workflows.</p>
+  <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Get Started</a>
+</div>
+{% endblock %}

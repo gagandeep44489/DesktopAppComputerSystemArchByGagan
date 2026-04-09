@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<div class="row g-3 mb-4">
+  <div class="col-md-4"><div class="card p-3"><h5>Total Claims</h5><h3>{{ total_claims }}</h3></div></div>
+  <div class="col-md-4"><div class="card p-3"><h5>Approved Claims</h5><h3>{{ approved_claims }}</h3></div></div>
+  <div class="col-md-4"><div class="card p-3"><h5>Pending Claims</h5><h3>{{ pending_claims }}</h3></div></div>
+</div>
+<div class="card mb-3">
+  <div class="card-header">Recent Claims</div>
+  <div class="table-responsive">
+    <table class="table mb-0"><thead><tr><th>ID</th><th>Policy</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for claim in claims %}
+      <tr><td>{{ claim.claim_id }}</td><td>{{ claim.policy.policy_number }}</td><td>{{ claim.customer.full_name }}</td><td>${{ '%.2f'|format(claim.claim_amount) }}</td><td>{{ claim.status }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

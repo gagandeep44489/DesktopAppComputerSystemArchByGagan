@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Customer Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Customer Dashboard</h2>
+  <a class="btn btn-primary" href="{{ url_for('claim.create_claim') }}">Submit Claim</a>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">My Policies</div>
+      <ul class="list-group list-group-flush">
+      {% for p in policies %}
+        <li class="list-group-item">{{ p.policy_number }} - {{ p.policy_type }} ({{ p.valid_from }} to {{ p.valid_to }})</li>
+      {% else %}
+        <li class="list-group-item">No policies assigned yet.</li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">Recent Notifications</div>
+      <ul class="list-group list-group-flush">
+      {% for n in notifications %}
+        <li class="list-group-item">{{ n.message }}</li>
+      {% else %}
+        <li class="list-group-item">No notifications.</li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

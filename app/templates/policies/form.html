@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Policy Form{% endblock %}
+{% block content %}
+<h2>{{ 'Edit Policy' if policy else 'Create Policy' }}</h2>
+<form method="post" class="row g-3">
+  {% if not policy %}<div class="col-md-6"><label>Policy Number</label><input name="policy_number" class="form-control" required></div>{% endif %}
+  <div class="col-md-6"><label>Policy Type</label><input name="policy_type" class="form-control" value="{{ policy.policy_type if policy else '' }}" required></div>
+  <div class="col-md-6"><label>Premium</label><input type="number" step="0.01" min="0" name="premium" class="form-control" value="{{ policy.premium if policy else '' }}" required></div>
+  <div class="col-md-6"><label>Customer</label>
+    <select class="form-select" name="customer_id" required>
+      <option value="">Select customer</option>
+      {% for customer in customers %}
+      <option value="{{ customer.id }}" {% if policy and policy.customer_id==customer.id %}selected{% endif %}>{{ customer.full_name }} ({{ customer.email }})</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-6"><label>Valid From</label><input type="date" name="valid_from" class="form-control" value="{{ policy.valid_from if policy else '' }}" required></div>
+  <div class="col-md-6"><label>Valid To</label><input type="date" name="valid_to" class="form-control" value="{{ policy.valid_to if policy else '' }}" required></div>
+  <div><button class="btn btn-primary">Save</button></div>
+</form>
+{% endblock %}
