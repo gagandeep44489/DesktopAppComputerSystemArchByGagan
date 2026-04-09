@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 from flask import Flask
 
@@ -16,12 +17,16 @@ def create_app(config_name: str | None = None) -> Flask:
     """Create Flask app using selected configuration."""
 
     env_name = config_name or os.getenv("FLASK_ENV", "development")
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_by_name.get(env_name, config_by_name["development"]))
 
     # Ensure runtime folders exist across environments (Windows/Linux/containerized).
     os.makedirs(app.instance_path, exist_ok=True)
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+    if not app.config.get("SQLALCHEMY_DATABASE_URI"):
+        sqlite_path = (Path(app.instance_path) / "insurance_claims.db").resolve()
+        app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{sqlite_path.as_posix()}"
 
     database_uri = str(app.config.get("SQLALCHEMY_DATABASE_URI", ""))
     if database_uri.startswith("sqlite:///"):

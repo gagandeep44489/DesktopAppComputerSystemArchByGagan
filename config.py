@@ -13,8 +13,7 @@ class Config:
     """Base configuration."""
 
     SECRET_KEY = os.getenv("SECRET_KEY", "change-this-in-production")
-    DEFAULT_SQLITE_PATH = (BASE_DIR / "instance" / "insurance_claims.db").resolve()
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_SQLITE_PATH}")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024  # 5 MB
     UPLOAD_FOLDER = BASE_DIR / "app" / "uploads"
