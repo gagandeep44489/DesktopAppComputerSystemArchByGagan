@@ -39,6 +39,10 @@ def create_app(config_name: str | None = None) -> Flask:
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
+    # Ensure base tables exist even when running via `flask --app app run`.
+    with app.app_context():
+        db.create_all()
+
     from .routes.auth import auth_bp
     from .routes.main import main_bp
     from .routes.policy import policy_bp
