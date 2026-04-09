@@ -19,7 +19,16 @@ def create_app(config_name: str | None = None) -> Flask:
     app = Flask(__name__)
     app.config.from_object(config_by_name.get(env_name, config_by_name["development"]))
 
+    # Ensure runtime folders exist across environments (Windows/Linux/containerized).
+    os.makedirs(app.instance_path, exist_ok=True)
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+    database_uri = str(app.config.get("SQLALCHEMY_DATABASE_URI", ""))
+    if database_uri.startswith("sqlite:///"):
+        sqlite_file_path = database_uri.replace("sqlite:///", "", 1)
+        sqlite_parent = os.path.dirname(sqlite_file_path)
+        if sqlite_parent:
+            os.makedirs(sqlite_parent, exist_ok=True)
 
     db.init_app(app)
     migrate.init_app(app, db)
