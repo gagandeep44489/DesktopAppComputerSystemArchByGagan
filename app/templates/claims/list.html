@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Claims{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Claims</h2>
+  {% if current_user.role == 'customer' %}<a class="btn btn-success" href="{{ url_for('claim.create_claim') }}">New Claim</a>{% endif %}
+</div>
+<form class="row g-2 mb-3">
+  <div class="col-md-4"><input class="form-control" name="search" placeholder="Search claim ID" value="{{ search }}"></div>
+  <div class="col-md-3">
+    <select class="form-select" name="status">
+      <option value="">All Statuses</option>
+      {% for s in ['Pending','Approved','Rejected'] %}
+      <option value="{{ s }}" {% if status==s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-2"><button class="btn btn-outline-primary">Filter</button></div>
+</form>
+<table class="table table-bordered table-striped">
+  <thead><tr><th>Claim ID</th><th>Policy</th><th>Amount</th><th>Date</th><th>Status</th><th>Prediction</th>{% if current_user.role == 'admin' %}<th>Action</th>{% endif %}</tr></thead>
+  <tbody>
+  {% for c in claims.items %}
+  <tr>
+    <td>{{ c.claim_id }}</td>
+    <td>{{ c.policy.policy_number }}</td>
+    <td>${{ '%.2f'|format(c.claim_amount) }}</td>
+    <td>{{ c.incident_date }}</td>
+    <td>{{ c.status }}</td>
+    <td>{{ (c.approval_probability() * 100)|round(1) }}% approval</td>
+    {% if current_user.role == 'admin' %}
+    <td>
+      <form method="post" action="{{ url_for('claim.update_status', claim_id=c.id) }}" class="d-flex gap-1">
+        <select name="status" class="form-select form-select-sm">
+          {% for s in ['Pending','Approved','Rejected'] %}<option value="{{ s }}" {% if c.status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+        </select>
+        <button class="btn btn-sm btn-primary">Update</button>
+      </form>
+    </td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<nav>
+  <ul class="pagination">
+    {% if claims.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('claim.list_claims', page=claims.prev_num, search=search, status=status) }}">Prev</a></li>{% endif %}
+    <li class="page-item disabled"><span class="page-link">Page {{ claims.page }} of {{ claims.pages }}</span></li>
+    {% if claims.has_next %}<li class="page-item"><a class="page-link" href="{{ url_for('claim.list_claims', page=claims.next_num, search=search, status=status) }}">Next</a></li>{% endif %}
+  </ul>
+</nav>
+{% endblock %}

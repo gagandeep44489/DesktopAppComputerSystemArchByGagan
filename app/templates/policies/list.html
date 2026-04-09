@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Policies{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Policies</h2>
+  {% if current_user.role == 'admin' %}<a href="{{ url_for('policy.create_policy') }}" class="btn btn-success">New Policy</a>{% endif %}
+</div>
+<table class="table table-striped">
+  <thead><tr><th>#</th><th>Type</th><th>Premium</th><th>Validity</th><th>Customer</th>{% if current_user.role == 'admin' %}<th>Action</th>{% endif %}</tr></thead>
+  <tbody>
+  {% for p in policies %}
+    <tr>
+      <td>{{ p.policy_number }}</td><td>{{ p.policy_type }}</td><td>${{ '%.2f'|format(p.premium) }}</td><td>{{ p.valid_from }} - {{ p.valid_to }}</td><td>{{ p.customer.full_name }}</td>
+      {% if current_user.role == 'admin' %}
+      <td>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('policy.edit_policy', policy_id=p.id) }}">Edit</a>
+        <form method="post" action="{{ url_for('policy.delete_policy', policy_id=p.id) }}" class="d-inline">
+          <button class="btn btn-sm btn-outline-danger">Delete</button>
+        </form>
+      </td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
