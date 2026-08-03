@@ -1,0 +1,4 @@
+import { Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material';
+import { SectionTitle } from '@/presentation/components/common/SectionTitle';
+import { useBlog } from '@/presentation/features/blog/hooks';
+export default function BlogPage() { const { data } = useBlog(); return <Container sx={{ py: 6 }}><SectionTitle eyebrow="Blog" title="Cricket tips for complete development" /><Grid container spacing={3}>{data?.map((post) => <Grid key={post.id} size={{ xs: 12, md: 4 }}><Card><CardContent><Chip label={post.category} color="secondary" /><Typography variant="h5" sx={{ mt: 2 }}>{post.title}</Typography><Typography sx={{ my: 2 }}>{post.excerpt}</Typography><Typography color="text.secondary">{post.readMinutes} min read</Typography></CardContent></Card></Grid>)}</Grid></Container>; }

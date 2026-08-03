@@ -1,0 +1,2 @@
+import { createTheme } from '@mui/material/styles';
+export const theme = createTheme({ palette: { primary: { main: '#0b1f3a' }, secondary: { main: '#f97316' }, background: { default: '#f8fafc' } }, typography: { fontFamily: ['Inter','Roboto','Arial','sans-serif'].join(','), h1: { fontWeight: 800 }, h2: { fontWeight: 800 }, h5: { fontWeight: 700 } }, shape: { borderRadius: 14 }, components: { MuiButton: { styleOverrides: { root: { textTransform: 'none', fontWeight: 700 } } } } });

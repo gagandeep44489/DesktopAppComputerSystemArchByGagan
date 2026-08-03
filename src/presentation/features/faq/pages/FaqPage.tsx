@@ -1,0 +1,6 @@
+import { Accordion, AccordionDetails, AccordionSummary, Container, TextField, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useMemo, useState } from 'react';
+import { SectionTitle } from '@/presentation/components/common/SectionTitle';
+const faqs = [{ q: 'What age groups do you coach?', a: 'Programs support kids, beginners, intermediates, advanced players, and elite performers.' }, { q: 'Do I need equipment?', a: 'Bring your kit if available. Shared training aids are provided for drills.' }, { q: 'Can parents observe?', a: 'Yes, parent reviews and progress conversations are part of youth coaching.' }];
+export default function FaqPage() { const [query, setQuery] = useState(''); const filtered = useMemo(() => faqs.filter((item) => item.q.toLowerCase().includes(query.toLowerCase())), [query]); return <Container sx={{ py: 6 }}><SectionTitle eyebrow="FAQ" title="Questions before you train" /><TextField fullWidth label="Search FAQs" value={query} onChange={(event) => setQuery(event.target.value)} sx={{ mb: 3 }} />{filtered.map((item) => <Accordion key={item.q}><AccordionSummary expandIcon={<ExpandMoreIcon />}><Typography>{item.q}</Typography></AccordionSummary><AccordionDetails>{item.a}</AccordionDetails></Accordion>)}</Container>; }
